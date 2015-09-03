@@ -3,7 +3,7 @@
 THREADS=$1;
 
 if [ -z "$THREADS" ];
-        then THREADS=`grep -c ^processor /proc/cpuinfo`;
+	then THREADS=`grep -c ^processor /proc/cpuinfo`;
 fi
 
 mkdir ../../Deliverables;
@@ -66,7 +66,7 @@ usearch70 -derep_fulllength split_libraries/seqs.fna  -output uparse/derep.fna -
 usearch70 -sortbysize       uparse/derep.fna -output uparse/sorted.fa -minsize 2;
 cp uparse/sorted.fa uparse/temp.fa
 for i in {0.4,0.8,1.2,1.6,2.0,2.4,2.8,3.2};
-do
+do 
 usearch70 -cluster_otus     uparse/temp.fa -otus   uparse/temp1.fa -otu_radius_pct $i -uc uparse/cluster_$i.uc -fastaout uparse/clustering.$i.fasta.out;
 cat uparse/clustering.$i.fasta.out | grep "^>" | grep chimera | sed 's/^>//g' | sed -re 's/;n=.*up=/\t/g' | sed 's/;$//g' | tee -a uparse/chimeras.txt > uparse/chimeras.$i.txt;
 cat uparse/clustering.$i.fasta.out | grep "^>" > uparse/uparseref.decisions.$i.txt;
@@ -85,7 +85,7 @@ cat split_libraries/seqs.fna | grep "^>" | cut -f1 -d "_" | cut -f2 -d ">" | sor
 cat uparse/stats.otu_table.txt | tail -n +17 | sed 's/^ //g' | sed -re 's/: /\t/g' | sed 's/\.0$//g' > Stats.MappedReads.txt;
 perl ~mcwong/gitRepo/16S_workflows/StatsComparisonMergedVsMapped.pl Stats.MergedReads.txt Stats.MappedReads.txt > Stats.Combined.txt
 summarize_taxa.py -i uparse/otu_table.biom -o ../Deliverables/${DIR}.TaxaSummary
-cp uparse/otu_table.biom ../Deliverables/${DIR}.otu_table.biom;
+cp uparse/otu_table.biom ../Deliverables/${DIR}.otu_table.biom; 
 cp Stats.Combined.txt ../Deliverables/${DIR}.Stats.Combined.txt;
 cp SampleList ../Deliverables/${DIR}.SampleList;
 cd Reads;

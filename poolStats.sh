@@ -26,3 +26,5 @@ percentBarcoded=$((100*${barcoded}/${totalReads}));
 percentPhiX=$((100*${phiXReads}/${totalReads}));
 percentStrict=$((100*${strictMerged}/${barcoded}));
 percentStandard=$((100*${standardMerged}/${barcoded}));
+echo -e "PoolID\t#Samples\tMachine Reads\tBarcoded Reads\t\%Barcoded Reads:Machine Reads\t#phiX Mapped\t\%phiX:Machine Reads\tStrict Merged Reads\t\%Strict Merged Reads:Barcoded Reads\tStandard Merged Reads\t\%Standard Merged Reads:Barcoded Reads\n${DIR}\t${numSamples}\t${totalReads}\t${barcoded}\t${percentBarcoded}%\t${phiXReads}\t${percentPhiX}%\t${strictMerged}\t${percentStrict}%\t${standardMerged}\t${percentStandard}%" > ../Deliverables/${DIR}.PoolStats.txt;
+
