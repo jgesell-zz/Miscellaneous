@@ -7,15 +7,15 @@ if [ -z "$THREADS" ];
 fi
 
 DIR=`pwd -P | cut -f9 -d "/" | cut -f1 | sed 's/WorkDir//g'`;
-totalReads=`cat ../Logs/${DIR}.phixOverall.stats.txt | grep "reads" | cut -f1 -d " ";`
-phiXReads=`cat ../Logs/${DIR}.phixOverall.stats.txt | grep "exactly" | cut -f5 -d " "`;
-phiXReads1=`cat ../Logs/${DIR}.phixOverall.stats.txt | grep ">1" | cut -f5 -d " "`;
+totalReads=`cat Logs/${DIR}.phixOverall.stats.txt | grep "reads" | cut -f1 -d " ";`
+phiXReads=`cat Logs/${DIR}.phixOverall.stats.txt | grep "exactly" | cut -f5 -d " "`;
+phiXReads1=`cat Logs/${DIR}.phixOverall.stats.txt | grep ">1" | cut -f5 -d " "`;
 phiXReads=$((${phiXReads}+${phiXReads1}));
 barcoded=0;
-for i in `cat ../${DIR}.barcodeCounts.txt | cut -f2`; do barcoded=$(($barcoded + `echo $i`)); done;
-strictMerged=`cat ../Deliverables/${DIR}.Stats.Combined.txt | grep "Raw" -A2 | grep "Total" | cut -f2 -d " "`;
-standardMerged=`bzcat ../Deliverables/${DIR}.MergedRaw.fq.bz2 | grep "@HWI-" | wc -l`;
-numSamples=`cat ../Deliverables/${DIR}.Stats.Combined.txt | cut -f1 -d " " | wc -l`;
+for i in `cat ${DIR}.barcodeCounts.txt | cut -f2`; do barcoded=$(($barcoded + `echo $i`)); done;
+strictMerged=`cat Deliverables/${DIR}.Stats.Combined.txt | grep "Raw" -A2 | grep "Total" | cut -f2 -d " "`;
+standardMerged=`bzcat Deliverables/${DIR}.MergedRaw.fq.bz2 | grep "@HWI-" | wc -l`;
+numSamples=`cat Deliverables/${DIR}.Stats.Combined.txt | cut -f1 -d " " | wc -l`;
 numSamples=$(($numSamples - 1));
 totalReads=$((${totalReads}*250));
 barcoded=$((${barcoded}*500));
@@ -26,5 +26,4 @@ percentBarcoded=$((100*${barcoded}/${totalReads}));
 percentPhiX=$((100*${phiXReads}/${totalReads}));
 percentStrict=$((100*${strictMerged}/${barcoded}));
 percentStandard=$((100*${standardMerged}/${barcoded}));
-echo -e "PoolID\t#Samples\tMachine Reads\tBarcoded Reads\t\%Barcoded Reads:Machine Reads\t#phiX Mapped\t\%phiX:Machine Reads\tStrict Merged Reads\t\%Strict Merged Reads:Barcoded Reads\tStandard Merged Reads\t\%Standard Merged Reads:Barcoded Reads\n${DIR}\t${numSamples}\t${totalReads}\t${barcoded}\t${percentBarcoded}%\t${phiXReads}\t${percentPhiX}%\t${strictMerged}\t${percentStrict}%\t${standardMerged}\t${percentStandard}%" > ../Deliverables/${DIR}.PoolStats.txt;
-
+echo -e "PoolID\t#Samples\tMachine Reads\tBarcoded Reads\t%Barcoded Reads:Machine Reads\t#phiX Mapped\t%phiX:Machine Reads\tStrict Merged Reads\t%Strict Merged Reads:Barcoded Reads\tStandard Merged Reads\t%Standard Merged Reads:Barcoded Reads\n${DIR}\t${numSamples}\t${totalReads}\t${barcoded}\t${percentBarcoded}%\t${phiXReads}\t${percentPhiX}%\t${strictMerged}\t${percentStrict}%\t${standardMerged}\t${percentStandard}%" > Deliverables/${DIR}.PoolStats.txt;
