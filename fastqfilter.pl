@@ -50,6 +50,3 @@ while (my $head = <IN>) {
 	}
 
 }
-
-
-
